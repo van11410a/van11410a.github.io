@@ -1,68 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Paradise</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spanish Flow Engine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
-    <header>
-        <h1>Product Paradise</h1>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#products">Products</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+<body class="light">
 
-    <section id="home">
-        <h2>Welcome to Product Paradise</h2>
-        <p>Find the best deals on a variety of products!</p>
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <span class="app-title">Spanish Flow Engine</span>
+    </div>
+    <div class="topbar-stats">
+      <span class="stat" id="stat-sentences">0 sentences</span>
+      <span class="stat-sep"></span>
+      <span class="stat" id="stat-stage">Stage 1</span>
+      <span class="stat-sep"></span>
+      <span class="stat" id="stat-words">0 words tracked</span>
+    </div>
+    <div class="topbar-right">
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+        <span class="icon-sun">☀</span>
+        <span class="icon-moon">☽</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN LAYOUT -->
+  <main class="layout">
+
+    <!-- LEFT PANEL: sentence feed -->
+    <section class="panel panel-feed" aria-label="Sentence feed">
+      <div class="panel-header">
+        <h2 class="panel-title">Sentence Feed</h2>
+        <span class="mode-badge" id="mode-badge">Flow Mode</span>
+      </div>
+      <div class="feed" id="feed" role="log" aria-live="polite"></div>
     </section>
 
-    <section id="about">
-        <h2>About Us</h2>
-        <p>We are dedicated to bringing you the best products at the best prices.</p>
-    </section>
+    <!-- RIGHT PANEL: controls -->
+    <aside class="panel panel-controls" aria-label="Controls">
 
-    <section id="products">
-        <h2>Our Products</h2>
-        <div class="product-list">
-            <div class="product">
-                <img src="product1.jpg" alt="Product 1">
-                <h3>Product 1</h3>
-                <p>Great product for your needs.</p>
-                <a href="https://amzn.to/3zlXPRC target="_blank">Buy Now</a>
-            </div>
-            <div class="product">
-                <img src="product2.jpg" alt="Product 2">
-                <h3>Product 2</h3>
-                <p>Another fantastic product.</p>
-                <a href="https://amzn.to/3zlXPRC" target="_blank">Buy Now</a>
-            </div>
-            <!-- Add more products as needed -->
+      <div class="controls-section">
+        <h3 class="section-label">Grammar Stage</h3>
+        <div class="stage-display" id="stage-display">
+          <div class="stage-number" id="stage-number">1</div>
+          <div class="stage-info">
+            <div class="stage-name" id="stage-name">Present Tense</div>
+            <div class="stage-desc" id="stage-desc">Core frames only</div>
+          </div>
         </div>
-    </section>
+        <div class="stage-track" id="stage-track">
+          <div class="stage-dot active" data-stage="1" title="Stage 1"></div>
+          <div class="stage-dot" data-stage="2" title="Stage 2"></div>
+          <div class="stage-dot" data-stage="3" title="Stage 3"></div>
+          <div class="stage-dot" data-stage="4" title="Stage 4"></div>
+          <div class="stage-dot" data-stage="5" title="Stage 5"></div>
+          <div class="stage-dot" data-stage="6" title="Stage 6"></div>
+        </div>
+        <div class="stage-buttons">
+          <button class="btn btn-ghost btn-sm" id="btn-prev-stage" disabled>&#8592; Prev</button>
+          <button class="btn btn-ghost btn-sm" id="btn-next-stage">Next &#8594;</button>
+        </div>
+      </div>
 
-    <section id="contact">
-        <h2>Contact Us</h2>
-        <form action="submit_form.php" method="post">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-            <label for="message">Message:</label>
-            <textarea id="message" name="message" required></textarea>
-            <button type="submit">Send</button>
-        </form>
-    </section>
+      <div class="controls-section">
+        <h3 class="section-label">Flow Mode</h3>
+        <button class="btn btn-primary" id="btn-next">Next Sentence</button>
+      </div>
 
-    <footer>
-        <p>&copy; 2024 Product Paradise. All rights reserved.</p>
-    </footer>
+      <div class="controls-section" id="story-section">
+        <h3 class="section-label">Story Mode</h3>
+        <div class="story-input-wrap">
+          <input
+            type="text"
+            id="story-topic"
+            class="story-input"
+            placeholder="Enter a topic (e.g. la playa)"
+            maxlength="40"
+          />
+        </div>
+        <button class="btn btn-secondary" id="btn-start-story">Start Story</button>
+        <button class="btn btn-secondary hidden" id="btn-next-story">Next Section</button>
+      </div>
+
+      <div class="controls-section">
+        <h3 class="section-label">Progress</h3>
+        <div class="progress-grid" id="progress-grid">
+          <div class="prog-item">
+            <span class="prog-label">Sentences</span>
+            <span class="prog-val" id="prog-sentences">0</span>
+          </div>
+          <div class="prog-item">
+            <span class="prog-label">Words tracked</span>
+            <span class="prog-val" id="prog-words">0</span>
+          </div>
+          <div class="prog-item">
+            <span class="prog-label">Due words</span>
+            <span class="prog-val" id="prog-due">0</span>
+          </div>
+          <div class="prog-item">
+            <span class="prog-label">Stage</span>
+            <span class="prog-val" id="prog-stage">1 / 6</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls-section controls-section--bottom">
+        <button class="btn btn-danger btn-sm" id="btn-reset">Reset Progress</button>
+      </div>
+
+    </aside>
+  </main>
+
+  <!-- RESET CONFIRM MODAL -->
+  <div class="modal-overlay hidden" id="modal-overlay">
+    <div class="modal">
+      <h3 class="modal-title">Reset all progress?</h3>
+      <p class="modal-body">This clears all saved data and returns to sentence 1, stage 1.</p>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="modal-cancel">Cancel</button>
+        <button class="btn btn-danger" id="modal-confirm">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
